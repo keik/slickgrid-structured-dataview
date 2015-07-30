@@ -1,0 +1,1 @@
+# slickgrid-structured-dataview
