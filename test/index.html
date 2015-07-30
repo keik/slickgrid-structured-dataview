@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>slickgrid-structured-dataview test</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.css">
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <script src="../node_modules/mocha-phantomjs/node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+      mocha.ui('bdd');
+      mocha.reporter('html');
+    </script>
+
+    <script src="../bower_components/slickgrid/lib/jquery-1.7.min.js"></script>
+    <script src="../slick.structureddataview.js"></script>
+
+    <script src="test.js"></script>
+
+    <script>
+      if (window.mochaPhantomJS)
+        mochaPhantomJS.run();
+      else
+        mocha.run();
+    </script>
+  </body>
+</html>

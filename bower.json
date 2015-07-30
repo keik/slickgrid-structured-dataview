@@ -1,0 +1,29 @@
+{
+  "name": "slickgrid-structured-dataview",
+  "homepage": "https://github.com/keik/slickgrid-structured-dataview",
+  "authors": [
+    {
+      "name": "keik",
+      "email": "k4t0.kei@gmail.com",
+      "url": "keik.info"
+    }
+  ],
+  "description": "Custom DataView to enable SlickGrid to deal with structured data.",
+  "main": "slick.structureddataview.js",
+  "keywords": [
+    "slickgrid",
+    "grid",
+    "plugin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "slickgrid": "https://github.com/mleibman/SlickGrid.git#2.1.0"
+  }
+}
