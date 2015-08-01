@@ -1,6 +1,9 @@
 'use strict';
-$(function () {
-  var DEV = false;
+
+var DEV = false;
+
+(function ($) {
+  'use strict';
 
   $.extend(true, window, {
     Slick: {
@@ -88,4 +91,4 @@ $(function () {
       // events
     });
   }
-});
+})(jQuery);

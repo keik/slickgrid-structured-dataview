@@ -5,8 +5,12 @@
   "main": "dist/slick.structureddataview.js",
   "scripts": {
     "lint": "jshint slick.structureddataview.js || true",
-    "test": "mocha-phantomjs test/index.html",
-    "build": "babel -d dist slick.structureddataview.js && uglify -s dist/slick.structureddataview.js -o dist/slick.structureddataview.js"
+    "test": "npm run babel && npm run mocha-phantomjs",
+    "build": "npm run babel && npm run uglify",
+
+    "uglify": "uglify -s dist/slick.structureddataview.js -o dist/slick.structureddataview.js",
+    "mocha-phantomjs": "mocha-phantomjs test/index.html",
+    "babel": "babel -d dist slick.structureddataview.js"
   },
   "repository": {
     "type": "git",
