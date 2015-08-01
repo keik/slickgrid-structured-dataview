@@ -28,7 +28,7 @@ const DEV = false;
       return _rows[i];
     }
     function getItemMetadata(/* i */) {
-      return null;
+      return {};
     }
 
     function setItems(items) {
@@ -43,18 +43,18 @@ const DEV = false;
       return _items;
     }
 
-    function _genRows(item, isObjInObj = false, acc = []) {
+    function _genRows(item, acc = [], isObjInObj = false, isFirstChild = false) {
 
-      if (DEV) console.log('called:', item);
+      if (DEV) console.log('called:', item, isObjInObj ? 'isObjInObj' : '', isFirstChild ? 'isFirstChild' : '');
       var i, len;
       if ($.isArray(item)) {
         for (i = 0, len = item.length; i < len; i++) {
-          _genRows(item[i], false, acc);
+          _genRows(item[i], acc, false, i === 0);
         }
       } else {
         var hasArray = false; // Preserve not boolean but string of Array property name
-        if (!isObjInObj) {
-          if (DEV) console.log('push:', JSON.stringify(item) + ' to ' + JSON.stringify(_rows));
+        if (acc.length === 0 /* root */ || (!isObjInObj && !isFirstChild)) {
+          if (DEV) console.log('push  :', JSON.stringify(item) + ' to ' + JSON.stringify(acc));
           acc.push(item);
         }
 
@@ -67,9 +67,9 @@ const DEV = false;
             } else {
               hasArray = i;
             }
-          }
-          if (typeof val === 'object')
-            _genRows(val, true, acc);
+            _genRows(val, acc, false);
+          } else if (typeof val === 'object')
+            _genRows(val, acc, true);
         }
       }
       return acc;

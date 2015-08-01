@@ -5,7 +5,7 @@
   "main": "dist/slick.structureddataview.js",
   "scripts": {
     "lint": "jshint slick.structureddataview.js || true",
-    "test": "npm run babel && npm run mocha-phantomjs",
+    "test": "npm run babel && npm run mocha-phantomjs 2>/dev/null",
     "build": "npm run babel && npm run uglify",
 
     "uglify": "uglify -s dist/slick.structureddataview.js -o dist/slick.structureddataview.js",
