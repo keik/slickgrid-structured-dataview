@@ -1,7 +1,6 @@
-const DEV = false;
-
-(function ($) {
-  'use strict';
+'use strict';
+$(function () {
+  var DEV = false;
 
   $.extend(true, window, {
     Slick: {
@@ -14,7 +13,8 @@ const DEV = false;
   /**
    * TODO
    */
-  function StructuredDataView(options = {}) {
+  function StructuredDataView() {
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     /** master data */
     var _items;
@@ -27,7 +27,7 @@ const DEV = false;
     function getItem(i) {
       return _rows[i];
     }
-    function getItemMetadata(/* i */) {
+    function getItemMetadata() /* i */{
       return null;
     }
 
@@ -43,7 +43,9 @@ const DEV = false;
       return _items;
     }
 
-    function _genRows(item, isObjInObj = false, acc = []) {
+    function _genRows(item) {
+      var isObjInObj = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var acc = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
 
       if (DEV) console.log('called:', item);
       var i, len;
@@ -62,14 +64,12 @@ const DEV = false;
           var val = item[i];
           if ($.isArray(val)) {
             if (hasArray) {
-              throw new TypeError('Arguments cannot have multiple children at same depth: `' +
-                                  hasArray + '` and `' + i + '`');
+              throw new TypeError('Arguments cannot have multiple children at same depth: `' + hasArray + '` and `' + i + '`');
             } else {
               hasArray = i;
             }
           }
-          if (typeof val === 'object')
-            _genRows(val, true, acc);
+          if (typeof val === 'object') _genRows(val, true, acc);
         }
       }
       return acc;
@@ -77,15 +77,15 @@ const DEV = false;
 
     $.extend(this, {
       // data provider methods
-      getLength,
-      getItem,
-      getItemMetadata,
+      getLength: getLength,
+      getItem: getItem,
+      getItemMetadata: getItemMetadata,
 
       // methods
-      setItems,
-      getItems
+      setItems: setItems,
+      getItems: getItems
 
       // events
     });
   }
-}(jQuery));
+});
