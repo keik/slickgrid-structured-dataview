@@ -1,48 +1,41 @@
-var grid;
-var dataView;
-
+/* global Slick */
 (function () {
+  'use strict';
+
+  var grid;
+  var dataView;
 
   var options = {
     editable: true,
-    enableColumnReorder: false
+    enableColumnReorder: false,
+    dataItemColumnValueExtractor: Slick.Extractor.structuredDataExtractor
   };
 
   var columns = window.columns = [
-    {id: 'id', name: 'id', field: 'id'},
+
+    /* eslint no-multi-spaces:[0] object-curly-spacing:[0] */
     {id: 'col1', name: 'col1', field: 'col1'},
     {id: 'col2', name: 'col2', field: 'col2'},
-    {id: 'col2-1', name: 'col2-1', field: 'col2-1'},
-    {id: 'col2-2', name: 'col2-2', field: 'col2-2'},
     {id: 'col3', name: 'col3', field: 'col3'},
-    {id: 'col3-1', name: 'col3-1', field: 'col3-1'},
-    {id: 'col3-2', name: 'col3-2', field: 'col3-2'},
-    {id: 'col3-2-1', name: 'col3-2-1', field: 'col3-2-1'},
-    {id: 'col3-2-2', name: 'col3-2-2', field: 'col3-2-2'}
+    {id: 'col4', name: 'col4', field: 'col4'}
   ];
 
   var data = window.data = [];
-
   for (var i = 0; i < 1000; i++) {
     data.push(
-      {
-        id: 'id-' + i,
-        'col1': 'col1 (' + i + ')',
-        'col2': [
-          {'col2-1': 'col2-1 (' + i + ')'},
-          {'col2-2': 'col2-2 (' + i + ')'}],
-        'col3': {'col3-1': 'col3-1 (' + i + ')',
-                 'col3-2': [
-                   {'col3-2-1': 'col3-2-1 (' + i + ')'},
-                   {'col3-2-2': 'col3-2-2 (' + i + ')'}]}});
+      {col1: i, children: [{col2: i + '-1', data: {col3: 'this is ' + i + '-1', children: [{col4: i + '-1-1'},
+                                                                                           {col4: i + '-1-2'}]}},
+                           {col2: i + '-2', col3: 'this is ' + i + '-2', children: [{col4: i + '-2-1'},
+                                                                                   {col4: i + '-2-2'},
+                                                                                   {col4: i + '-2-3'}]}]});
   }
 
   $(function () {
-
-    dataView = new Slick.Data.StructuredDataView();
+    dataView = window.dataView = new Slick.Data.StructuredDataView(grid);
     dataView.setItems(data);
-    grid = new Slick.Grid('#myGrid', dataView, columns, options);
-  });
 
+    grid = window.grid = new Slick.Grid('#myGrid', dataView, columns, options);
+    dataView.syncGridCellCssStyles(grid, 'rowspan');
+  });
 
 }());
