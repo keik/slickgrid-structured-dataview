@@ -6,32 +6,32 @@ const DEV = false;
   $.extend(true, window, {
     Slick: {
       Data: {
-        StructuredDataView: StructuredDataView
+        StructuredDataView
       }
     }
   });
 
+  // TODO: write
   /**
-   * TODO
+   * @constructor
    */
-  function StructuredDataView(options = {}) {
+  function StructuredDataView (/* options = {} */) {
 
     /** master data */
-    var _items;
+    var _items,
+        _rows;
 
-    var _rows;
-
-    function getLength() {
+    function getLength () {
       return _rows.length;
     }
-    function getItem(i) {
+    function getItem (i) {
       return _rows[i];
     }
-    function getItemMetadata(/* i */) {
+    function getItemMetadata (/* i */) {
       return {};
     }
 
-    function setItems(items) {
+    function setItems (items) {
       _items = items;
 
       _rows = _genRows(items);
@@ -39,37 +39,41 @@ const DEV = false;
       if (DEV) console.log('============================');
     }
 
-    function getItems() {
+    function getItems () {
       return _items;
     }
 
-    function _genRows(item, acc = [], isObjInObj = false, isFirstChild = false) {
-
+    function _genRows (item, acc = [], isObjInObj = false, isFirstChild = false) {
       if (DEV) console.log('called:', item, isObjInObj ? 'isObjInObj' : '', isFirstChild ? 'isFirstChild' : '');
       var i, len;
+
       if ($.isArray(item)) {
         for (i = 0, len = item.length; i < len; i++) {
           _genRows(item[i], acc, false, i === 0);
         }
       } else {
         var hasArray = false; // Preserve not boolean but string of Array property name
+
         if (acc.length === 0 /* root */ || (!isObjInObj && !isFirstChild)) {
           if (DEV) console.log('push  :', JSON.stringify(item) + ' to ' + JSON.stringify(acc));
           acc.push(item);
         }
 
-        for (i in item) {
-          var val = item[i];
-          if ($.isArray(val)) {
-            if (hasArray) {
-              throw new TypeError('Arguments cannot have multiple children at same depth: `' +
-                                  hasArray + '` and `' + i + '`');
-            } else {
-              hasArray = i;
-            }
-            _genRows(val, acc, false);
-          } else if (typeof val === 'object')
-            _genRows(val, acc, true);
+        for (var key in item) {
+          if (item.hasOwnProperty(key)) {
+            var val = item[key];
+
+            if ($.isArray(val)) {
+              if (hasArray) {
+                throw new TypeError('Arguments cannot have multiple children at same depth: `' +
+                                    hasArray + '` and `' + key + '`');
+              } else {
+                hasArray = key;
+              }
+              _genRows(val, acc, false);
+            } else if (typeof val === 'object')
+              _genRows(val, acc, true);
+          }
         }
       }
       return acc;
