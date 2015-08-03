@@ -5,6 +5,14 @@
   var grid;
   var dataView;
 
+  $(function () {
+    dataView = window.dataView = new Slick.Data.StructuredDataView(grid);
+    dataView.setItems(data);
+
+    grid = window.grid = new Slick.Grid('#myGrid', dataView, columns, options);
+    dataView.syncGridCellCssStyles(grid, 'rowspan');
+  });
+
   var options = {
     editable: true,
     enableColumnReorder: false,
@@ -29,13 +37,5 @@
                                                                                    {col4: i + '-2-2'},
                                                                                    {col4: i + '-2-3'}]}]});
   }
-
-  $(function () {
-    dataView = window.dataView = new Slick.Data.StructuredDataView(grid);
-    dataView.setItems(data);
-
-    grid = window.grid = new Slick.Grid('#myGrid', dataView, columns, options);
-    dataView.syncGridCellCssStyles(grid, 'rowspan');
-  });
 
 }());

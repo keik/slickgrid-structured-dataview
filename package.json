@@ -5,11 +5,13 @@
   "main": "dist/slick.structureddataview.js",
   "scripts": {
     "lint": "eslint slick.structureddataview.js || true",
-    "test": "npm run babel && npm run mocha-phantomjs 2>/dev/null",
-    "build": "npm run babel && npm run uglify",
+    "test": "npm run lint && npm run babel && npm run mocha-phantomjs 2>/dev/null",
+    "build": "npm run test && npm run uglify",
+    "start": "http-server & npm run babel:watch",
     "uglify": "uglifyjs dist/slick.structureddataview.js --comments -o dist/slick.structureddataview.js",
     "mocha-phantomjs": "mocha-phantomjs test/index.html",
-    "babel": "babel -d dist slick.structureddataview.js"
+    "babel": "babel -d dist slick.structureddataview.js",
+    "babel:watch": "babel -d dist slick.structureddataview.js -w"
   },
   "repository": {
     "type": "git",
@@ -31,9 +33,10 @@
   },
   "homepage": "https://github.com/keik/slickgrid-structured-dataview#readme",
   "devDependencies": {
-    "babel-core": "^5.8.19",
+    "babel": "^5.8.20",
     "chai": "^3.2.0",
     "eslint": "^1.0.0",
+    "http-server": "^0.8.0",
     "mocha-phantomjs": "^3.6.0",
     "uglify-js": "^2.4.24"
   }
