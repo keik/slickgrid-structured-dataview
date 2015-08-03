@@ -6,11 +6,29 @@
   var dataView;
 
   $(function () {
+    // create StructuredDataView object
     dataView = window.dataView = new Slick.Data.StructuredDataView(grid);
-    dataView.setItems(data);
 
+    // set DataView to SlickGrid
     grid = window.grid = new Slick.Grid('#myGrid', dataView, columns, options);
+
+    // apply rowspan styles
     dataView.syncGridCellCssStyles(grid, 'rowspan');
+
+    // event on row count changed
+    dataView.onRowCountChanged.subscribe(function () {
+      grid.updateRowCount();
+      grid.render();
+    });
+
+    // event on row changed
+    dataView.onRowsChanged.subscribe(function () {
+      grid.invalidate();
+      grid.render();
+    });
+
+    // manipulate data via StructuredDataView
+    dataView.setItems(data);
   });
 
   var options = {

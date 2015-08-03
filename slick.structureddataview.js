@@ -102,7 +102,7 @@ const DEV = false;
      *       {col2: '1-1', data: {col3: 'this is 1-1'}},
      *       {col2: '1-2', data: {col3: 'this is 1-2'}}
      *     ]},
-     *     {co11: '2', children: [
+     *     {col1: '2', children: [
      *       {col2: '2-1', data: {col3: 'this is 2-1', children: [
      *         {col4: '2-1-1'},
      *         {col4: '2-1-2'}]}},
