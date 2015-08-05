@@ -85,11 +85,11 @@ const DEV = false;
      * When specified positions are out of range, return `null`
      * @public
      * @param {Number|Object} i row index or row item
-     * @param {String} colId column ID
+     * @param {String} columnDef column defination
      * @return {String|Number|null} value
      */
-    function getValue (i, colId) {
-      return getItem(i, colId) != null ? getItem(i, colId)[colId] : '';
+    function getValue (i, columnDef) {
+      return getItem(i, columnDef.id) != null ? getItem(i, columnDef.id)[columnDef.field] : '';
     }
 
     /**
@@ -345,7 +345,7 @@ const DEV = false;
        * @returns {String} value
        */
       function _structuredDataExtractor (item, columnDef) {
-        return String(StructuredDataView.prototype.getValue.apply(null, [item, columnDef.id]));
+        return String(StructuredDataView.prototype.getValue.apply(null, [item, columnDef]));
       }
 
       /**
