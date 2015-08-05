@@ -79,7 +79,7 @@
 
     /* eslint no-multi-spaces:[0] object-curly-spacing:[0] */
     {id: 'col1', name: 'col1', field: 'col1', group: 'g1', editor: Slick.Editors.Text},
-    {id: 'col2', name: 'col2', field: 'col2', group: 'g1', editor: Slick.Editors.Text},
+    {id: 'col2', name: 'col2', field: 'col2', group: 'g1', editor: Slick.Editors.Integer},
     {id: 'col3', name: 'col3', field: 'col3', group: 'g2', editor: Slick.Editors.Text},
     {id: 'col4', name: 'col4', field: 'col4', group: 'g2', editor: Slick.Editors.Text}
   ];
