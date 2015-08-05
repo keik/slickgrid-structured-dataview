@@ -45,16 +45,6 @@ const DEV = false;
     }
 
     /**
-     * Internal function for `get*` methods.
-     * @private
-     * @param {String} target getting for
-     * @param {Number|Object} i starting row index or row item to find target
-     * @param {String} colId columnd ID
-     * @param {Array} parentArray parrent array of `i`
-     * @returns {Object|Array|String|Number} what you want
-     */
-
-    /**
      * Return a item at row index `i`.
      * When `i` is out of range, return `null`.
      * @public
@@ -94,7 +84,7 @@ const DEV = false;
      * Return value of cell pointed at `i` and `colId`.
      * When specified positions are out of range, return `null`
      * @public
-     * @param {Number} i row index
+     * @param {Number|Object} i row index or row item
      * @param {String} colId column ID
      * @return {String|Number|null} value
      */
