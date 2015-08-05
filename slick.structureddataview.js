@@ -14,9 +14,6 @@ const DEV = false;
     Slick: {
       Data: {
         StructuredDataView
-      },
-      Extractor: {
-        structuredDataExtractor
       }
     }
   });
@@ -33,8 +30,10 @@ const DEV = false;
     /** internal rows data */
     var _rows = [];
 
-    var onRowCountChanged = new Slick.Event(),
-        onRowsChanged = new Slick.Event();
+    var onRowsChanged = new Slick.Event();
+
+    // ================================================================================
+    // Accessors
 
     /**
      * Return rows length.
@@ -46,13 +45,61 @@ const DEV = false;
     }
 
     /**
-     * Return a item at index `i`
+     * Internal function for `get*` methods.
+     * @private
+     * @param {String} target getting for
+     * @param {Number|Object} i starting row index or row item to find target
+     * @param {String} colId columnd ID
+     * @param {Array} parentArray parrent array of `i`
+     * @returns {Object|Array|String|Number} what you want
+     */
+
+    /**
+     * Return a item at row index `i`.
+     * When `i` is out of range, return `null`.
      * @public
      * @param {Number} i index
-     * @returns {Object} item
+     * @param {String} colId column ID
+     * @returns {Object|null} item
      */
-    function getItem (i) {
-      return _rows[i];
+    function getItem (i, colId) {
+      if (colId != null) {
+
+        // `i` can be passed item `Object` type internally.
+        var item = (typeof i === 'number' ? getItem(i) : i),
+            v = item && item[colId];
+
+        if (v == null) {
+          for (var key in item) {
+            if (item.hasOwnProperty(key)) {
+              var nested = item[key];
+              if (typeof nested === 'object') {
+                return getItem(nested, colId);
+              }
+            }
+          }
+          return null;
+        }
+        return item;
+      }
+      return _rows[i] || null;
+    }
+
+    // TODO
+    function getParent (i, colId) {
+      return getItem(5, 'col1').children;
+    }
+
+    /**
+     * Return value of cell pointed at `i` and `colId`.
+     * When specified positions are out of range, return `null`
+     * @public
+     * @param {Number} i row index
+     * @param {String} colId column ID
+     * @return {String|Number|null} value
+     */
+    function getValue (i, colId) {
+      return getItem(i, colId) != null ? getItem(i, colId)[colId] : '';
     }
 
     /**
@@ -73,9 +120,6 @@ const DEV = false;
       _items = items;
       _rows = _genRowsFromItems(_items);
 
-      if (DEV) console.log('RESULT:', JSON.stringify(_rows));
-      if (DEV) console.log('============================');
-
       _refresh();
     }
 
@@ -88,10 +132,41 @@ const DEV = false;
       return _items;
     }
 
-    function _refresh () {
-      onRowsChanged.notify();
-      onRowCountChanged.notify();
+    // ================================================================================
+    // Data manipulator
+
+    function insertItem (row, colId) {
+      _insert(row, colId, false);
     }
+
+    function appendItem (row, colId) {
+      _insert(row, colId, true);
+    }
+
+    function _insert (row, colId, isAppend) {
+      // TODO
+      var clicked = 0;
+      var newItem = {x: 1, y: 2, col2: 3, col3: 4, children: [{col4: 5}, {col4: '5-2'}]};
+
+      var array = getParent(row, colId);
+      array.splice(clicked + (isAppend ? 1 : 0), 0, newItem);
+      _refresh();
+    }
+
+    // ========================================
+    // Events
+
+    /**
+     * Notify changed.
+     * @returns {undefined} undefined
+     */
+    function _refresh () {
+      _rows = _genRowsFromItems(_items);
+      onRowsChanged.notify();
+    }
+
+    // ========================================
+    // Data formatting
 
     /**
      * Generate rows array from items.
@@ -125,7 +200,6 @@ const DEV = false;
      * @returns {Object} rows
      */
     function _genRowsFromItems (item, acc = [], isObjInObj = false, isFirstChild = false) {
-      if (DEV) console.log('called:', item, isObjInObj ? 'isObjInObj' : '', isFirstChild ? 'isFirstChild' : '');
       var i, len;
 
       if ($.isArray(item)) {
@@ -138,7 +212,6 @@ const DEV = false;
         var hasArray = false; // Preserve not boolean but string of Array property name
 
         if (acc.length === 0 /* root */ || (!isObjInObj && !isFirstChild)) {
-          if (DEV) console.log('push  :', JSON.stringify(item) + ' to ' + JSON.stringify(acc));
           acc.push(item);
         }
 
@@ -165,31 +238,10 @@ const DEV = false;
     /**
      * Return row span on specific cell.
      * @param {Number} row row index
-     * @param {String} col col index
+     * @param {String} colId column ID
      * @returns {Number} rowspan
      */
-    function _getRowspan (row, col) {
-
-      var item = _rows[row];
-
-      function _findRoot (item, col) {
-        var target = item[col];
-
-        if (target == null) {
-          for (var key in item) {
-            if (item.hasOwnProperty(key)) {
-              var val = item[key];
-
-              if (typeof val === 'object') {
-                return _findRoot(val, col);
-              }
-            }
-          }
-        } else {
-          return item;
-        }
-        return null;
-      } // _findRoot
+    function _getRowspan (row, colId) {
 
       function _getGeneration (item) {
         if (item == null) {
@@ -229,12 +281,15 @@ const DEV = false;
         return depth;
       } // _getGeneration
 
-      return _getGeneration(_findRoot(item, col));
+      return _getGeneration(getItem(row, colId));
     }
 
+    // ================================================================================
+    // Styles (depend on DOM)
 
     /**
      * Synchronize grid style.
+     * Called Once.
      * @public
      * @param {SlickGrid} grid SlickGrid object
      * @param {String} key key of style rules
@@ -248,31 +303,7 @@ const DEV = false;
        * @param {SlickGrid} grid SlickGrid object
        * @returns {undefined} undefined
        */
-      function _createCssRules (grid) {
-
-        /**
-         * Measure a cell height and horizontal padding. (almost adapted from `measureCellPaddingAndBorder` in slick.grid.js)
-         * @private
-         * @returns {undefined} undefined
-         */
-        function _measureVCellPaddingAndBorder () {
-
-          var v = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
-              $canvas = $(grid.getCanvasNode()),
-              $r = $('<div class="slick-row" />').appendTo($canvas),
-              $el = $('<div class="slick-cell" id="" style="visibility:hidden">-</div>').appendTo($r);
-
-          var height,
-              heightDiff = 0;
-
-          height = parseFloat($el.css('height'));
-          $.each(v, function (n, val) {
-            heightDiff += parseFloat($el.css(val)) || 0;
-          });
-          $r.remove();
-
-          return {height, heightDiff};
-        } // _measureVCellPaddingAndBorder
+      function _createCssRules () {
 
         // create style rules
         var uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_\d+(?!\w)/)[0],
@@ -282,7 +313,7 @@ const DEV = false;
 
         var maxrow = 30; // TODO to be intelligent
         for (var i = 0; i < maxrow; i++) {
-          rules.push('.' + uid + ' .h' + i + ' {height:' + (i * (v.height + v.heightDiff) - v.heightDiff) + 'px;}');
+          rules.push('.' + uid + ' .h' + i + ' {margin: 0; font-size: inherit; height:' + (i * (v.height + v.heightDiff) - v.heightDiff) + 'px;}');
         }
 
         var styleEl = $('<style type="text/css" rel="stylesheet" />').appendTo($('head'))[0];
@@ -291,41 +322,90 @@ const DEV = false;
         } else {
           styleEl.appendChild(document.createTextNode(rules.join(' ')));
         }
+      } // _createCssRules
+
+      /**
+       * Measure a cell height and horizontal padding. (almost adapted from `measureCellPaddingAndBorder` in slick.grid.js)
+       * @private
+       * @returns {undefined} undefined
+       */
+      function _measureVCellPaddingAndBorder () {
+
+        var v = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
+            $canvas = $(grid.getCanvasNode()),
+            $r = $('<div class="slick-row" />').appendTo($canvas),
+            $el = $('<div class="slick-cell" id="" style="visibility:hidden">-</div>').appendTo($r);
+
+        var height,
+            heightDiff = 0;
+
+        height = parseFloat($el.css('height'));
+        $.each(v, function (n, val) {
+          heightDiff += parseFloat($el.css(val)) || 0;
+        });
+        $r.remove();
+
+        return {height, heightDiff};
+      } // _measureVCellPaddingAndBorder
+
+      /**
+       * SlickGrid formatter for StructuredDataView
+       * @param {Object} item a row item
+       * @param {Object} columnDef column defination
+       * @returns {String} value
+       */
+      function _structuredDataExtractor (item, columnDef) {
+        return String(StructuredDataView.prototype.getValue.apply(null, [item, columnDef.id]));
       }
 
-      function update () {
-        var cssHash = _genCssHashFromRows(_rows, grid.getColumns());
+      /**
+       * Generate CSS Hash from rows.
+       * This CSS styles are for rowspan representation.
+       * @private
+       * @param {Array} rows rows
+       * @param {Array.<Object>} columns columun definations
+       * @return {Object} hash of style rules
+       */
+      function _genCssHashFromRows () {
+        var cssHash = {},
+            columns = grid.getColumns();
+
+        for (var i = 0, I = _rows.length; i < I; i++) {
+          for (var j = 0, J = columns.length; j < J; j++) {
+            cssHash[i] = cssHash[i] || {};
+            var columnId = columns[j].id;
+            var rowspan = _getRowspan(i, columnId);
+            cssHash[i][columnId] = rowspan != null ? 'h' + rowspan : 'hidden';
+          }
+        }
+        return cssHash;
+      }
+
+      /**
+       * Update CSS rules.
+       * @private
+       * @return {undefined} undefined
+       */
+      function _styleUpdate () {
+        var cssHash = _genCssHashFromRows();
+
         grid.setCellCssStyles(key, cssHash);
       }
 
-      this.onRowsChanged.subscribe(update);
-      this.onRowCountChanged.subscribe(update);
+      this.onRowsChanged.subscribe(_styleUpdate);
 
+      // et value extractor
+      grid.getOptions().dataItemColumnValueExtractor = _structuredDataExtractor;
+
+      // create style rules defination
       _createCssRules(grid);
-      update();
-    }
 
-    /**
-     * Generate CSS Hash from rows.
-     * This CSS styles are for rowspan representation.
-     * @private
-     * @param {Array} rows rows
-     * @param {Array.<Object>} columns columun definations
-     * @return {Object} hash of style rules
-     */
-    function _genCssHashFromRows (rows, columns) {
-      var cssHash = {};
+      // calculate and apply applicable styles to DOM
+      _styleUpdate();
+    } // syncGridCellCssStyles
 
-      for (var i = 0, I = rows.length; i < I; i++) {
-        for (var j = 0, J = columns.length; j < J; j++) {
-          cssHash[i] = cssHash[i] || {};
-          var columnId = columns[j].id;
-          var rowspan = _getRowspan(i, columnId);
-          cssHash[i][columnId] = rowspan != null ? 'h' + rowspan : 'hidden';
-        }
-      }
-      return cssHash;
-    }
+    // ================================================================================
+    // Exports
 
     $.extend(this, {
       // data provider methods
@@ -334,47 +414,22 @@ const DEV = false;
       getItemMetadata,
 
       // methods
+      getParent,
+      getValue,
       setItems,
       getItems,
+      insertItem,
+      appendItem,
       syncGridCellCssStyles,
 
+
       // events
-      onRowsChanged,
-      onRowCountChanged
+      onRowsChanged
     });
+
+    // `getValue` is useful for `structuredDataExtractor`
+    this.constructor.prototype.getValue = getValue;
+
   } // StructuredDataView
-
-  /**
-   * SlickGrid formatter for StructuredDataView
-   * @param {Object} item a row item
-   * @param {Object} columnDef column defination
-   * @returns {String} value
-   */
-  function structuredDataExtractor (item, columnDef) {
-
-    function findValue (item, columnDef) {
-
-      var v = item[columnDef.field];
-
-      if (v == null) {
-        for (var key in item) {
-          if (item.hasOwnProperty(key)) {
-            var nested = item[key];
-
-            if (typeof nested === 'object') {
-              return findValue(nested, columnDef);
-            }
-          }
-        }
-      } else if (typeof v === 'object') {
-        // not want to enter...
-        return item;
-      }
-      return v != null ? v : '';
-
-    }
-
-    return String(findValue(item, columnDef));
-  }
 
 }(jQuery));

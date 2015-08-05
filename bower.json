@@ -24,6 +24,8 @@
     "tests"
   ],
   "dependencies": {
-    "slickgrid": "https://github.com/mleibman/SlickGrid.git#2.1.0"
+    "slickgrid": "https://github.com/mleibman/SlickGrid.git#2.1.0",
+    "slickgrid-colgroup-plugin": "~0.0.3",
+    "bootstrap": "~3.3.5"
   }
 }
