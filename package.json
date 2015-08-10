@@ -1,6 +1,6 @@
 {
   "name": "slickgrid-structured-dataview",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
   "main": "dist/slick.structureddataview.js",
   "scripts": {
@@ -8,7 +8,6 @@
     "test": "npm run lint && npm run babel && npm run mocha-phantomjs 2>/dev/null",
     "build": "npm run test && npm run uglify",
     "start": "http-server & npm run babel:watch",
-
     "mocha-phantomjs": "mocha-phantomjs test/index.html",
     "babel": "rm dist -rf && babel -d dist slick.structured*.es",
     "babel:watch": "babel -d dist slick.structured*.es -w",
