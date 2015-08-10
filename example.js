@@ -21,12 +21,7 @@
       grid.invalidate();
     });
 
-    grid.onClick.subscribe(function (e, args) {
-      console.log('oncl', args);
-    });
-
-    grid.onContextMenu.subscribe(function (e, args, b) {
-      console.log('conte', e, args, b);
+    grid.onContextMenu.subscribe(function (e, args) {
       e.preventDefault();
 
       var cell = grid.getCellFromEvent(e);
@@ -51,17 +46,17 @@
     var $menu = $(e.delegateTarget),
         data = $menu.data(),
         row = data.row,
-        cell = data.cell;
+        colId = columns[data.cell].id;
 
     switch (this.id) {
     case 'edit-cell':
       grid.editActiveCell();
       break;
     case 'insert-row-above':
-      dataView.insertItem(row, cell);
+      dataView.insertItem(row, colId);
       break;
     case 'insert-row-below':
-      dataView.appendItem(row, cell);
+      dataView.appendItem(row, colId);
       break;
     case 'remove-row':
       break;

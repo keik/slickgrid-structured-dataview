@@ -5,7 +5,7 @@
 
 const DEV = false;
 
-/* globals Slick */
+/* globals Slick, jsoon */
 
 (function ($) {
   'use strict';
@@ -25,10 +25,11 @@ const DEV = false;
   function StructuredDataView (/* options = {} */) {
 
     /** master data */
-    var _items = [];
+    let _items = [];
 
     /** internal rows data */
-    var _rows = [];
+    let _rows = [],
+        _$$rows;
 
     var onRowsChanged = new Slick.Event();
 
@@ -76,7 +77,9 @@ const DEV = false;
     }
 
     // TODO
-    function getParent (i, colId) {
+    function getParent (/* i, colId */) {
+
+
       return getItem(5, 'col1').children;
     }
 
@@ -109,7 +112,7 @@ const DEV = false;
     function setItems (items) {
       _items = items;
       _rows = _genRowsFromItems(_items);
-
+      _$$rows = window._$$rows = jsoon(_rows);
       _refresh();
     }
 
@@ -134,12 +137,39 @@ const DEV = false;
     }
 
     function _insert (row, colId, isAppend) {
-      // TODO
-      var clicked = 0;
-      var newItem = {x: 1, y: 2, col2: 3, col3: 4, children: [{col4: 5}, {col4: '5-2'}]};
+      let item = getItem(row, colId),
+          $$item = _$$rows.find(item),
+          $$parent = $$item.parent();
 
-      var array = getParent(row, colId);
-      array.splice(clicked + (isAppend ? 1 : 0), 0, newItem);
+      // find parent and index, to insert new item
+      while (!$.isArray($$parent[0])) {
+        $$parent = $$parent.parent();
+      }
+
+      let parent = $$parent[0];
+
+
+      let index = 0;
+      for (let len = parent.length; index < len; index++) {
+        if ($$parent.children(index).find(item).length === 1)
+          break;
+      }
+
+      function reset (obj) {
+        for (let k in obj) {
+          if (typeof obj[k] !== 'object') {
+            obj[k] = '';
+          } else {
+            reset(obj[k]);
+          }
+        }
+        return obj;
+      }
+
+      // create new item to insert, which have same structure with parent one but blank values
+      let newItem = reset(JSON.parse(JSON.stringify(parent[0])));
+
+      parent.splice(index + (isAppend ? 1 : 0), 0, newItem);
       _refresh();
     }
 

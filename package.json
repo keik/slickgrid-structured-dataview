@@ -4,14 +4,16 @@
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
   "main": "dist/slick.structureddataview.js",
   "scripts": {
-    "lint": "eslint *.es || true",
-    "test": "npm run lint && npm run babel && npm run mocha-phantomjs 2>/dev/null",
-    "build": "npm run test && npm run uglify",
+    "lint": "eslint *.es",
+    "test": "npm run mocha-phantomjs",
     "start": "http-server & npm run babel:watch",
+    "build": "npm run eslint && npm run babel && npm run uglify && npm run test",
+    "-----": "----------------------------------------------------------------",
+    "eslint": "eslint ./*.es",
     "mocha-phantomjs": "mocha-phantomjs test/index.html",
     "babel": "rm dist -rf && babel -d dist slick.structured*.es",
     "babel:watch": "babel -d dist slick.structured*.es -w",
-    "uglify": "find dist -name '*.js' -exec bash -c 'node_modules/.bin/uglifyjs \"$0\" -o \"${0%.js}.min.js\" --comments'  {} \\;"
+    "uglify": "find dist -type f ! -name \"*min.js\" -exec bash -c 'node_modules/.bin/uglifyjs \"$0\" -o \"${0%.js}.min.js\" --comments'  {} \\;"
   },
   "repository": {
     "type": "git",
