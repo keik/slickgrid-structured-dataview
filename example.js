@@ -59,6 +59,7 @@
       dataView.appendRow(row, colId);
       break;
     case 'remove-row':
+      dataView.deleteRow(row, colId);
       break;
     default:
     }

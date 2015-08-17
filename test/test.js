@@ -541,6 +541,97 @@ describe('slick-structured-dataview', function () {
     });
   });
 
+  describe('deleteRow', function () {
+    it('should delete a specified row properly 1', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.deleteRow(0, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should delete a specified row properly 2', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.deleteRow(1, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should delete a specified row properly 3', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      dataView.setItems(items);
+      dataView.deleteRow(2, 'col4');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should delete a specified row properly 4', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.deleteRow(2, 'col3');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should delete a specified row properly 5', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.deleteRow(0, 'col1');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+  });
+
   // TODO pass
   // describe('getParentItem(i, colId)', function () {
   //   it('should return properly value 1', function () {

@@ -119,14 +119,36 @@
     // ================================================================================
     // Data manipulator
 
+    /**
+     * Insert a new Row to specified position. (same as `appendRow` before specified position)
+     * @public
+     * @param {Number} row row index
+     * @param {String} colId column id
+     * @return {undefined} undefined
+     */
     function insertRow (row, colId) {
       _insert(row, colId, false);
     }
 
+    /**
+     * Append a new Row to specified position. (same as `insertRow` after specified position)
+     * @public
+     * @param {Number} row row index
+     * @param {String} colId column id
+     * @return {undefined} undefined
+     */
     function appendRow (row, colId) {
       _insert(row, colId, true);
     }
 
+    /**
+     * Insert a new Row to specified position.
+     * @private
+     * @param {Number} row row index
+     * @param {String} colId column id
+     * @param {Boolean} isAppend flag for append mode
+     * @return {undefined} undefined
+     */
     function _insert (row, colId, isAppend) {
       let $$item = _$$items.find(getItem(row, colId)),
           $$parent = $$item.parent();
@@ -159,6 +181,36 @@
       // create new item to insert, which have same structure with parent one but blank values
       let newItem = reset(JSON.parse(JSON.stringify(parent[index])));
       parent.splice(index + (isAppend ? 1 : 0), 0, newItem);
+      _refresh();
+    }
+
+    /**
+     * Delete a specified row
+     * @public
+     * @param {Number} row row index
+     * @param {String} colId column id
+     * @param {Boolean} isAppend flag for append mode
+     * @return {undefined} undefined
+     */
+    function deleteRow (row, colId) {
+      let $$item = _$$items.find(getItem(row, colId)),
+          $$parent = $$item.parent();
+
+      // find parent not array object, that item belongs
+      while (!$.isArray($$item.parent()[0])) {
+        $$item = $$item.parent();
+      }
+      let item = $$item[0];
+
+      // find parent and index, to insert new item
+      while (!$.isArray($$parent[0])) {
+        $$parent = $$parent.parent();
+      }
+      let parent = $$parent[0];
+
+      let index = parent.indexOf(item);
+      parent.splice(index, 1);
+
       _refresh();
     }
 
@@ -428,6 +480,7 @@
       getItems,
       insertRow,
       appendRow,
+      deleteRow,
       syncGridCellCssStyles,
 
 
