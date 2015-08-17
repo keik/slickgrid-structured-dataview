@@ -331,7 +331,7 @@ describe('slick-structured-dataview', function () {
   });
 
   describe('insertRow', function () {
-    it('should insert a new item properly 1', function () {
+    it('should insert a new row to specified position 1', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -351,7 +351,7 @@ describe('slick-structured-dataview', function () {
       dataView.insertRow(0, 'col2');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 2', function () {
+    it('should insert a new row to specified position 2', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -371,7 +371,7 @@ describe('slick-structured-dataview', function () {
       dataView.insertRow(1, 'col2');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 3', function () {
+    it('should insert a new row to specified position 3', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -391,7 +391,7 @@ describe('slick-structured-dataview', function () {
       dataView.insertRow(2, 'col4');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 4', function () {
+    it('should insert a new row to specified position 4', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -412,7 +412,7 @@ describe('slick-structured-dataview', function () {
       dataView.insertRow(2, 'col3');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 5', function () {
+    it('should insert a new row to specified position 5', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -436,7 +436,7 @@ describe('slick-structured-dataview', function () {
   });
 
   describe('appendRow', function () {
-    it('should insert a new item properly 1', function () {
+    it('should append a new row to specified position 1', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -456,7 +456,7 @@ describe('slick-structured-dataview', function () {
       dataView.appendRow(0, 'col2');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 2', function () {
+    it('should append a new row to specified position 2', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -476,7 +476,7 @@ describe('slick-structured-dataview', function () {
       dataView.appendRow(1, 'col2');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 3', function () {
+    it('should append a new row to specified position 3', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -496,7 +496,7 @@ describe('slick-structured-dataview', function () {
       dataView.appendRow(2, 'col4');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 4', function () {
+    it('should append a new row to specified position 4', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
@@ -518,7 +518,7 @@ describe('slick-structured-dataview', function () {
       dataView.appendRow(2, 'col3');
       assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
     });
-    it('should insert a new item properly 5', function () {
+    it('should append a new row to specified position 5', function () {
       var items = [
         {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
                                {col2: '1-2', data: {col3: 'this is 1-2'}}]},
