@@ -330,6 +330,217 @@ describe('slick-structured-dataview', function () {
     });
   });
 
+  describe('insertRow', function () {
+    it('should insert a new item properly 1', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"","data":{"col3":""}},
+                                {"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.insertRow(0, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 2', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"","data":{"col3":""}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.insertRow(1, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 3', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":""},
+                                                                                       {"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.insertRow(2, 'col4');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 4', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"","data":{"col3":"","children":[{"col4":""},
+                                                                         {"col4":""}]}},
+                                {"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.insertRow(2, 'col3');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 5', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"","children":[{"col2":"","data":{"col3":""}},
+                               {"col2":"","data":{"col3":""}}]},
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.insertRow(0, 'col1');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+  });
+
+  describe('appendRow', function () {
+    it('should insert a new item properly 1', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"","data":{"col3":""}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.appendRow(0, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 2', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}},
+                                {"col2":"","data":{"col3":""}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.appendRow(1, 'col2');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 3', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":""},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.appendRow(2, 'col4');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 4', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"","data":{"col3":"","children":[{"col4":""},
+                                                                         {"col4":""}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.appendRow(2, 'col3');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+    it('should insert a new item properly 5', function () {
+      var items = [
+        {col1: '1', children: [{col2: '1-1', data: {col3: 'this is 1-1'}},
+                               {col2: '1-2', data: {col3: 'this is 1-2'}}]},
+        {col1: '2', children: [{col2: '2-1', data: {col3: 'this is 2-1', children: [{col4: '2-1-1'},
+                                                                                    {col4: '2-1-2'}]}},
+                               {col2: '2-2'}]}];
+
+      var expected = [
+        {"col1":"1","children":[{"col2":"1-1","data":{"col3":"this is 1-1"}},
+                                {"col2":"1-2","data":{"col3":"this is 1-2"}}]},
+        {"col1":"","children":[{"col2":"","data":{"col3":""}},
+                               {"col2":"","data":{"col3":""}}]},
+        {"col1":"2","children":[{"col2":"2-1","data":{"col3":"this is 2-1","children":[{"col4":"2-1-1"},
+                                                                                       {"col4":"2-1-2"}]}},
+                                {"col2":"2-2"}]}];
+
+      dataView.setItems(items);
+      dataView.appendRow(0, 'col1');
+      assert.equal(JSON.stringify(dataView.getItems()), JSON.stringify(expected));
+    });
+  });
+
   // TODO pass
   // describe('getParentItem(i, colId)', function () {
   //   it('should return properly value 1', function () {

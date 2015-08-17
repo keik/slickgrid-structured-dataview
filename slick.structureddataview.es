@@ -23,11 +23,11 @@
   function StructuredDataView (/* options = {} */) {
 
     /** master data */
-    let _items = [];
+    let _items = [],
+        _$$items;
 
     /** internal rows data */
-    let _rows = [],
-        _$$rows;
+    let _rows = [];
 
     let onRowsChanged = new Slick.Event();
 
@@ -103,7 +103,7 @@
     function setItems (items) {
       _items = items;
       _rows = _genRowsFromItems(_items);
-      _$$rows = window._$$rows = jsoon(_rows);
+      _$$items = window._$$items = jsoon(_items);
       _refresh();
     }
 
@@ -119,31 +119,29 @@
     // ================================================================================
     // Data manipulator
 
-    function insertItem (row, colId) {
+    function insertRow (row, colId) {
       _insert(row, colId, false);
     }
 
-    function appendItem (row, colId) {
+    function appendRow (row, colId) {
       _insert(row, colId, true);
     }
 
     function _insert (row, colId, isAppend) {
-      let item = getItem(row, colId),
-          $$item = _$$rows.find(item),
+      let $$item = _$$items.find(getItem(row, colId)),
           $$parent = $$item.parent();
+
+      // find parent not array object, that item belongs
+      while (!$.isArray($$item.parent()[0])) {
+        $$item = $$item.parent();
+      }
+      let item = $$item[0];
 
       // find parent and index, to insert new item
       while (!$.isArray($$parent[0])) {
         $$parent = $$parent.parent();
       }
-
       let parent = $$parent[0];
-
-      let index = 0;
-      for (let len = parent.length; index < len; index++) {
-        if ($$parent.children(index).find(item).length === 1)
-          break;
-      }
 
       function reset (obj) {
         for (let k in obj) {
@@ -156,9 +154,10 @@
         return obj;
       }
 
-      // create new item to insert, which have same structure with parent one but blank values
-      let newItem = reset(JSON.parse(JSON.stringify(parent[0])));
+      var index = parent.indexOf(item);
 
+      // create new item to insert, which have same structure with parent one but blank values
+      let newItem = reset(JSON.parse(JSON.stringify(parent[index])));
       parent.splice(index + (isAppend ? 1 : 0), 0, newItem);
       _refresh();
     }
@@ -427,8 +426,8 @@
       getValue,
       setItems,
       getItems,
-      insertItem,
-      appendItem,
+      insertRow,
+      appendRow,
       syncGridCellCssStyles,
 
 

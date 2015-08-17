@@ -53,10 +53,10 @@
       grid.editActiveCell();
       break;
     case 'insert-row-above':
-      dataView.insertItem(row, colId);
+      dataView.insertRow(row, colId);
       break;
     case 'insert-row-below':
-      dataView.appendItem(row, colId);
+      dataView.appendRow(row, colId);
       break;
     case 'remove-row':
       break;
