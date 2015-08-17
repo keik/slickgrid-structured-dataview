@@ -5,10 +5,6 @@
 
 'use strict';
 
-var DEV = false;
-
-/* globals Slick, jsoon */
-
 (function ($) {
   'use strict';
 
@@ -88,12 +84,6 @@ var DEV = false;
         }
         return _rows[i] || null;
       }
-    }
-
-    // TODO
-    function getParent() /* i, colId */{
-
-      return getItem(5, 'col1').children;
     }
 
     /**
@@ -235,13 +225,14 @@ var DEV = false;
       var isObjInObj = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
       var isFirstChild = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
-      var i, len;
+      var i = undefined,
+          len = undefined;
 
       if ($.isArray(item)) {
-        var parent = acc.length - 1;
+        var _parent = acc.length - 1;
 
         for (i = 0, len = item.length; i < len; i++) {
-          _genRowsFromItems(item[i], acc, false, i === 0, parent);
+          _genRowsFromItems(item[i], acc, false, i === 0, _parent);
         }
       } else {
         var hasArray = false; // Preserve not boolean but string of Array property name
@@ -370,7 +361,7 @@ var DEV = false;
             $r = $('<div class="slick-row" />').appendTo($canvas),
             $el = $('<div class="slick-cell" id="" style="visibility:hidden">-</div>').appendTo($r);
 
-        var height,
+        var height = undefined,
             heightDiff = 0;
 
         height = parseFloat($el.css('height'));
@@ -448,7 +439,6 @@ var DEV = false;
       getItemMetadata: getItemMetadata,
 
       // methods
-      getParent: getParent,
       getValue: getValue,
       setItems: setItems,
       getItems: getItems,
@@ -464,3 +454,4 @@ var DEV = false;
     this.constructor.prototype.getValue = getValue;
   } // StructuredDataView
 })(jQuery);
+/* globals Slick, jsoon */

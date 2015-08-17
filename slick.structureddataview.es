@@ -3,8 +3,6 @@
  * @license MIT
  */
 
-const DEV = false;
-
 /* globals Slick, jsoon */
 
 (function ($) {
@@ -31,7 +29,7 @@ const DEV = false;
     let _rows = [],
         _$$rows;
 
-    var onRowsChanged = new Slick.Event();
+    let onRowsChanged = new Slick.Event();
 
     // ================================================================================
     // Accessors
@@ -57,13 +55,13 @@ const DEV = false;
       if (colId != null) {
 
         // `i` can be passed item `Object` type internally.
-        var item = (typeof i === 'number' ? getItem(i) : i),
+        let item = (typeof i === 'number' ? getItem(i) : i),
             v = item && item[colId];
 
         if (v == null) {
-          for (var key in item) {
+          for (let key in item) {
             if (item.hasOwnProperty(key)) {
-              var nested = item[key];
+              let nested = item[key];
               if (typeof nested === 'object') {
                 return getItem(nested, colId);
               }
@@ -74,13 +72,6 @@ const DEV = false;
         return item;
       }
       return _rows[i] || null;
-    }
-
-    // TODO
-    function getParent (/* i, colId */) {
-
-
-      return getItem(5, 'col1').children;
     }
 
     /**
@@ -147,7 +138,6 @@ const DEV = false;
       }
 
       let parent = $$parent[0];
-
 
       let index = 0;
       for (let len = parent.length; index < len; index++) {
@@ -220,24 +210,24 @@ const DEV = false;
      * @returns {Object} rows
      */
     function _genRowsFromItems (item, acc = [], isObjInObj = false, isFirstChild = false) {
-      var i, len;
+      let i, len;
 
       if ($.isArray(item)) {
-        var parent = acc.length - 1;
+        let parent = acc.length - 1;
 
         for (i = 0, len = item.length; i < len; i++) {
           _genRowsFromItems(item[i], acc, false, i === 0, parent);
         }
       } else {
-        var hasArray = false; // Preserve not boolean but string of Array property name
+        let hasArray = false; // Preserve not boolean but string of Array property name
 
         if (acc.length === 0 /* root */ || (!isObjInObj && !isFirstChild)) {
           acc.push(item);
         }
 
-        for (var key in item) {
+        for (let key in item) {
           if (item.hasOwnProperty(key)) {
-            var val = item[key];
+            let val = item[key];
 
             if ($.isArray(val)) {
               if (hasArray) {
@@ -268,22 +258,22 @@ const DEV = false;
           return null;
         }
 
-        var depth = 0;
+        let depth = 0;
         _dive(item);
 
         function _dive (item) {
-          var hasArrayOrObj = false;
+          let hasArrayOrObj = false;
 
           if (typeof item !== 'object') return;
 
-          for (var key in item) {
+          for (let key in item) {
             if (item.hasOwnProperty(key)) {
-              var val = item[key];
+              let val = item[key];
 
               if (typeof val === 'object') {
                 hasArrayOrObj = true;
                 if ($.isArray(val)) {
-                  for (var i = 0, len = val.length; i < len; i++) {
+                  for (let i = 0, len = val.length; i < len; i++) {
                     _dive(val[i]);
                   }
                 } else {
@@ -326,17 +316,17 @@ const DEV = false;
       function _createCssRules () {
 
         // create style rules
-        var uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_\d+(?!\w)/)[0],
+        let uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_\d+(?!\w)/)[0],
             v = _measureVCellPaddingAndBorder();
 
-        var rules = ['.hidden {visibility: hidden;}'];
+        let rules = ['.hidden {visibility: hidden;}'];
 
-        var maxrow = 30; // TODO to be intelligent
-        for (var i = 0; i < maxrow; i++) {
+        let maxrow = 30; // TODO to be intelligent
+        for (let i = 0; i < maxrow; i++) {
           rules.push('.' + uid + ' .h' + i + ' {margin: 0; font-size: inherit; height:' + (i * (v.height + v.heightDiff) - v.heightDiff) + 'px;}');
         }
 
-        var styleEl = $('<style type="text/css" rel="stylesheet" />').appendTo($('head'))[0];
+        let styleEl = $('<style type="text/css" rel="stylesheet" />').appendTo($('head'))[0];
         if (styleEl.styleSheet) { // IE
           styleEl.styleSheet.cssText = rules.join(' ');
         } else {
@@ -351,12 +341,12 @@ const DEV = false;
        */
       function _measureVCellPaddingAndBorder () {
 
-        var v = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
+        let v = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
             $canvas = $(grid.getCanvasNode()),
             $r = $('<div class="slick-row" />').appendTo($canvas),
             $el = $('<div class="slick-cell" id="" style="visibility:hidden">-</div>').appendTo($r);
 
-        var height,
+        let height,
             heightDiff = 0;
 
         height = parseFloat($el.css('height'));
@@ -387,14 +377,14 @@ const DEV = false;
        * @return {Object} hash of style rules
        */
       function _genCssHashFromRows () {
-        var cssHash = {},
+        let cssHash = {},
             columns = grid.getColumns();
 
-        for (var i = 0, I = _rows.length; i < I; i++) {
-          for (var j = 0, J = columns.length; j < J; j++) {
+        for (let i = 0, I = _rows.length; i < I; i++) {
+          for (let j = 0, J = columns.length; j < J; j++) {
             cssHash[i] = cssHash[i] || {};
-            var columnId = columns[j].id;
-            var rowspan = _getRowspan(i, columnId);
+            let columnId = columns[j].id;
+            let rowspan = _getRowspan(i, columnId);
             cssHash[i][columnId] = rowspan != null ? 'h' + rowspan : 'hidden';
           }
         }
@@ -407,7 +397,7 @@ const DEV = false;
        * @return {undefined} undefined
        */
       function _styleUpdate () {
-        var cssHash = _genCssHashFromRows();
+        let cssHash = _genCssHashFromRows();
 
         grid.setCellCssStyles(key, cssHash);
       }
@@ -434,7 +424,6 @@ const DEV = false;
       getItemMetadata,
 
       // methods
-      getParent,
       getValue,
       setItems,
       getItems,
