@@ -1,6 +1,6 @@
 {
   "name": "slickgrid-structured-dataview",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
   "main": "dist/slick.structureddataview.js",
   "scripts": {
