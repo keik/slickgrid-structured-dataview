@@ -1,6 +1,9 @@
 // ESLint 1.0.0
 
 {
+  "extends": [
+    ".eslintrc-globals"
+  ],
   "env": {
     "browser": true,                    // browser global variables.
     "node": false,                      // Node.js global variables and Node.js scoping.
@@ -235,5 +238,9 @@
     // "space-in-brackets": [],
     // "space-unary-word-ops": [],
     // "spaced-line-comment": [],
+  },
+
+  "ecmaFeatures": {
+    "modules": "true"
   }
 }

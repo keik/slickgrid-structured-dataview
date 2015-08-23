@@ -4,16 +4,17 @@
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
   "main": "dist/slick.structureddataview.js",
   "scripts": {
-    "lint": "eslint *.es",
-    "test": "npm run mocha-phantomjs",
+    "lint": "eslint src/*.es",
     "start": "http-server & npm run babel:watch",
-    "build": "npm run eslint && npm run babel && npm run uglify && npm run test",
+    "start:dev": "http-server & watchify src/slick.structureddataview.es -o dist/slick.structureddataview.js -t babelify -v",
+    "test": "npm run mocha-phantomjs",
+    "build": "npm run clean && npm run eslint && npm run browserify && npm run uglify && npm run test",
     "-----": "----------------------------------------------------------------",
-    "eslint": "eslint ./*.es",
+    "eslint": "eslint src/*.es",
     "mocha-phantomjs": "mocha-phantomjs test/index.html",
-    "babel": "rm dist -rf && babel -d dist slick.structured*.es",
-    "babel:watch": "babel -d dist slick.structured*.es -w",
-    "uglify": "find dist -type f ! -name \"*min.js\" -exec bash -c 'node_modules/.bin/uglifyjs \"$0\" -o \"${0%.js}.min.js\" --comments'  {} \\;"
+    "clean": "rimraf dist && mkdirp dist",
+    "browserify": "browserify -t babelify src/slick.structureddataview.es > dist/slick.structureddataview.js",
+    "uglify": "uglifyjs dist/slick.structureddataview.js -o dist/slick.structureddataview.min.js"
   },
   "repository": {
     "type": "git",
@@ -35,11 +36,15 @@
   },
   "homepage": "https://github.com/keik/slickgrid-structured-dataview#readme",
   "devDependencies": {
-    "babel": "^5.8.20",
+    "babelify": "^6.2.0",
+    "browserify": "^11.0.1",
     "chai": "^3.2.0",
-    "eslint": "^1.0.0",
+    "eslint": "^1.2.1",
     "http-server": "^0.8.0",
+    "mkdirp": "^0.5.1",
     "mocha-phantomjs": "^3.6.0",
-    "uglify-js": "^2.4.24"
+    "rimraf": "^2.4.2",
+    "uglify-js": "^2.4.24",
+    "watchify": "^3.3.1"
   }
 }
