@@ -42,3 +42,7 @@ var data = [
 
 dataView.setItems(data);
 ```
+
+## License
+
+MIT (c) keik
