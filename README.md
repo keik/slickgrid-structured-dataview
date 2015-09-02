@@ -1,8 +1,8 @@
 # slickgrid-structured-dataview
 
-[SlickGrid](https://github.com/mleibman/SlickGrid) plugin to deal with structred data.
+[SlickGrid](https://github.com/mleibman/SlickGrid) plugin to deal with structured data.
 
-![](https://github.com/keik/slickgrid-structured-dataview/raw/master/assets/screenshot.png)
+![](https://github.com/keik/slickgrid-structured-dataview/raw/master/screenshots/screenshot.png)
 
 
 ## Usage
