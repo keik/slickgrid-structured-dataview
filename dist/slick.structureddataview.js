@@ -919,7 +919,8 @@ function plural(ms, n, name) {
 
 },{}],6:[function(require,module,exports){
 /**
- * http://github.com/keik/slick-structured-dataview
+ * https://github.com/keik/slickgrid-structured-dataview
+ * (c) keik
  * @license MIT
  */
 

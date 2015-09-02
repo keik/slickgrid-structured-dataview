@@ -1,5 +1,6 @@
 /**
- * http://github.com/keik/slick-structured-dataview
+ * https://github.com/keik/slickgrid-structured-dataview
+ * (c) keik
  * @license MIT
  */
 
