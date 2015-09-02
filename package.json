@@ -5,16 +5,13 @@
   "main": "dist/slick.structureddataview.js",
   "scripts": {
     "lint": "eslint src/*.es",
-    "start": "http-server & npm run babel:watch",
     "start:dev": "http-server & watchify src/slick.structureddataview.es -o dist/slick.structureddataview.js -t babelify -v",
-    "test": "npm run mocha-phantomjs",
-    "build": "npm run clean && npm run eslint && npm run browserify && npm run uglify && npm run test",
+    "test": "mocha-phantomjs test/index.html",
+    "build": "npm run clean && npm run lint && npm run browserify && npm run uglify && npm run test",
     "-----": "----------------------------------------------------------------",
-    "eslint": "eslint src/*.es",
-    "mocha-phantomjs": "mocha-phantomjs test/index.html",
     "clean": "rimraf dist && mkdirp dist",
     "browserify": "browserify -t babelify src/slick.structureddataview.es > dist/slick.structureddataview.js",
-    "uglify": "uglifyjs dist/slick.structureddataview.js -o dist/slick.structureddataview.min.js"
+    "uglify": "uglifyjs dist/slick.structureddataview.js -cm --comments -o dist/slick.structureddataview.min.js"
   },
   "repository": {
     "type": "git",
@@ -46,5 +43,8 @@
     "rimraf": "^2.4.2",
     "uglify-js": "^2.4.24",
     "watchify": "^3.3.1"
+  },
+  "dependencies": {
+    "jsoon": "^0.1.0"
   }
 }

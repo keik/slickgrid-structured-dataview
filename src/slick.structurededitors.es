@@ -1,8 +1,3 @@
-/**
- * http://github.com/keik/slick-structured-dataview
- * @license MIT
- */
-
 export {
   TextEditor,
   IntegerEditor,

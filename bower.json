@@ -9,7 +9,7 @@
     }
   ],
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
-  "main": "slick.structureddataview.js",
+  "main": "dist/slick.structureddataview.js",
   "keywords": [
     "slickgrid",
     "grid",
@@ -20,12 +20,15 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "src",
     "test",
-    "tests"
+    "tests",
+    "package.json",
+    "screenshots",
+    "examples"
   ],
   "dependencies": {
-    "slickgrid": "https://github.com/mleibman/SlickGrid.git#2.1.0",
-    "jsoon": "https://github.com/keik/jsoon.git#0.0.1"
+    "slickgrid": "https://github.com/mleibman/SlickGrid.git#2.1.0"
   },
   "devDependencies": {
     "bootstrap": "~3.3.5",

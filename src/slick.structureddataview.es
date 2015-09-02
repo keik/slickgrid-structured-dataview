@@ -13,6 +13,8 @@ import {
   LongTextEditor
 } from './slick.structurededitors.es';
 
+import jsoon from 'jsoon';
+
 $.extend(true, window, {
   Slick: {
     Data: {
