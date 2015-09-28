@@ -4,6 +4,7 @@
   "description": "Custom DataView to enable SlickGrid to deal with structured data.",
   "main": "dist/slick.structureddataview.js",
   "scripts": {
+    "install": "bower i",
     "lint": "eslint src/*.es",
     "start:dev": "http-server & watchify src/slick.structureddataview.es -o dist/slick.structureddataview.js -t babelify -v",
     "test": "mocha-phantomjs test/index.html",
@@ -34,12 +35,14 @@
   "homepage": "https://github.com/keik/slickgrid-structured-dataview#readme",
   "devDependencies": {
     "babelify": "^6.2.0",
+    "bower": "^1.5.3",
     "browserify": "^11.0.1",
     "chai": "^3.2.0",
     "eslint": "^1.2.1",
     "http-server": "^0.8.0",
     "mkdirp": "^0.5.1",
-    "mocha-phantomjs": "^3.6.0",
+    "mocha": "^2.3.3",
+    "mocha-phantomjs": "^4.0.1",
     "rimraf": "^2.4.2",
     "uglify-js": "^2.4.24",
     "watchify": "^3.3.1"
