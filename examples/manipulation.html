@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>slickgrid-structured-dataview demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../bower_components/slickgrid/slick.grid.css" type="text/css" />
+    <link rel="stylesheet" href="../bower_components/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../bower_components/slickgrid/examples/examples.css" type="text/css" />
+    <style>
+      body {margin: 0;}
+      .grid {background: white; outline: 0; border: 1px solid gray;}
+      .slick-row.active {background-color: #fcc;}
+      .slick-header-column.ui-state-default {box-sizing: content-box;}
+      .slick-cell {box-sizing: content-box;}
+    </style>
+  </head>
+  <body>
+
+    <div id="my-grid" class="grid" style="width: 800px; height: 400px"></div>
+
+    <p style="margin-top: 12px; font-size: 1em">
+      you can manipulate data with right-click context menu.
+    </p>
+
+    <div id="context-menu">
+      <ul class="dropdown-menu" role="menu">
+        <li><a id="edit-cell">Edit</a></li>
+        <li class="divider"></li>
+        <li><a id="insert-row-above">Insert row above</a></li>
+        <li><a id="insert-row-below">Insert row below</a></li>
+        <li class="divider"></li>
+        <li><a id="remove-row">Remove row</a></li>
+      </ul>
+    </div>
+
+    <script src="../bower_components/slickgrid/lib/jquery-1.7.min.js"></script>
+    <script src="../bower_components/slickgrid/lib/jquery.event.drag-2.2.js"></script>
+    <script src="../bower_components/slickgrid/slick.core.js"></script>
+    <script src="../bower_components/slickgrid/slick.grid.js"></script>
+
+    <script src="../dist/slick.structureddataview.js"></script>
+    <script>
+
+      /** columns defination */
+      var columns = [
+
+        /* eslint no-multi-spaces:[0] object-curly-spacing:[0] */
+        {id: 'col1', name: 'col1', field: 'col1', editor: Slick.Editors.Text},
+        {id: 'col2', name: 'col2', field: 'col2', editor: Slick.Editors.Integer},
+        {id: 'col3', name: 'col3', field: 'col3', editor: Slick.Editors.Text},
+        {id: 'col4', name: 'col4', field: 'col4', editor: Slick.Editors.Text}
+      ];
+
+      /** grid options */
+      var options = {
+        autoEdit: false,
+        editable: true,
+        enableColumnReorder: false
+      };
+
+      /** data */
+      var data = [];
+      for (var i = 0; i < 1000; i++) {
+        data.push(
+          {col1: i, children: [{col2: i + '-1', data: {col3: 'this is ' + i + '-1', children: [{col4: i + '-1-1'},
+                                                                                               {col4: i + '-1-2'}]}},
+                               {col2: i + '-2', col3: 'this is ' + i + '-2', children: [{col4: i + '-2-1'},
+                                                                                        {col4: i + '-2-2'},
+                                                                                        {col4: i + '-2-3'}]}]});
+      }
+
+      /** StructuredDataView */
+      var dataView = new Slick.Data.StructuredDataView();;
+
+      /** SlickGrid */
+      var grid = new Slick.Grid('#my-grid', dataView, columns, options);;
+
+      // ------------------------
+      // setup DataView
+      // ------------------------
+
+      // apply rowspan styles
+      dataView.syncGridCellCssStyles(grid, 'rowspan');
+
+      // event on row changed
+      dataView.onRowsChanged.subscribe(function() {
+        grid.invalidate();
+      });
+
+      dataView.setItems(data);
+
+      // ------------------------
+      // setup SlickGrid
+      // ------------------------
+
+      grid.onContextMenu.subscribe(function(e, args) {
+        e.preventDefault();
+
+        var cell = grid.getCellFromEvent(e);
+        grid.gotoCell(cell.row, cell.cell);
+
+        var $menu = $('#context-menu')
+              .toggleClass('open', true)
+              .data({row: cell.row, cell: cell.cell}) // preserve evented pos
+              .css({position: 'absolute', top: e.pageY, left: e.pageX});
+
+        $(document).one('click', function() {
+          $menu.toggleClass('open', false);
+        });
+      });
+
+      // set DOM-event handlers
+      $('#context-menu').on('click', 'a', onClickContextMenu);
+
+      function onClickContextMenu(e) {
+        var $menu = $(e.delegateTarget),
+        data = $menu.data(),
+        row = data.row,
+        colId = columns[data.cell].id;
+
+        switch (this.id) {
+        case 'edit-cell':
+          grid.editActiveCell();
+          break;
+        case 'insert-row-above':
+          dataView.insertRow(row, colId);
+          break;
+        case 'insert-row-below':
+          dataView.appendRow(row, colId);
+          break;
+        case 'remove-row':
+          dataView.deleteRow(row, colId);
+          break;
+        default:
+        }
+      }
+
+    </script>
+  </body>
+</html>
