@@ -1310,14 +1310,14 @@ function StructuredDataView() {
     function _createCssRules() {
 
       // create style rules
-      var uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_\d+(?!\w)/)[0],
+      var uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_(\d+)(?!\w)/)[1],
           v = _measureVCellPaddingAndBorder();
 
       var rules = ['.hidden {visibility: hidden;}'];
 
       var maxrow = 30; // TODO to be intelligent
       for (var i = 0; i < maxrow; i++) {
-        rules.push('.' + uid + ' .h' + i + ' {margin: 0; font-size: inherit; height:' + (i * (v.height + v.heightDiff) - v.heightDiff) + 'px;}');
+        rules.push('.slickgrid_' + uid + ' .h' + i + ' {margin: 0; font-size: inherit; height:' + (i * (v.height + v.heightDiff) - v.heightDiff) + 'px;}');
       }
 
       var styleEl = $('<style type="text/css" rel="stylesheet" />').appendTo($('head'))[0];
