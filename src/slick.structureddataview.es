@@ -37,7 +37,7 @@ $.extend(true, window, {
  * @constructor
  * @param {SlickGrid} grid SlickGrid object
  */
-function StructuredDataView (/* options = {} */) {
+function StructuredDataView() {
 
   /** master data */
   let _items = [],
@@ -56,7 +56,7 @@ function StructuredDataView (/* options = {} */) {
    * @public
    * @return {Number} rows length
    */
-  function getLength () {
+  function getLength() {
     return _rows.length;
   }
 
@@ -68,7 +68,7 @@ function StructuredDataView (/* options = {} */) {
    * @param {String} colId column ID
    * @returns {Object|null} item
    */
-  function getItem (i, colId) {
+  function getItem(i, colId) {
     if (colId != null) {
 
       // `i` can be passed item `Object` type internally.
@@ -99,7 +99,7 @@ function StructuredDataView (/* options = {} */) {
    * @param {String} columnDef column defination
    * @return {String|Number|null} value
    */
-  function getValue (i, columnDef) {
+  function getValue(i, columnDef) {
     return getItem(i, columnDef.id) != null ? getItem(i, columnDef.id)[columnDef.field] : '';
   }
 
@@ -107,7 +107,7 @@ function StructuredDataView (/* options = {} */) {
    * Unused. (but overriding required)
    * @returns {Object} blank object.
    */
-  function getItemMetadata (/* i */) {
+  function getItemMetadata() {
     return {};
   }
 
@@ -115,9 +115,8 @@ function StructuredDataView (/* options = {} */) {
    * Set items.
    * @public
    * @param {Array.<Object>} items items
-   * @returns {undefined} undefined
    */
-  function setItems (items) {
+  function setItems(items) {
     _items = items;
     _rows = _genRowsFromItems(_items);
     _$$items = window._$$items = jsoon(_items);
@@ -129,7 +128,7 @@ function StructuredDataView (/* options = {} */) {
    * @public
    * @returns {Array} all items
    */
-  function getItems () {
+  function getItems() {
     return _items;
   }
 
@@ -141,9 +140,8 @@ function StructuredDataView (/* options = {} */) {
    * @public
    * @param {Number} row row index
    * @param {String} colId column id
-   * @return {undefined} undefined
    */
-  function insertRow (row, colId) {
+  function insertRow(row, colId) {
     _insert(row, colId, false);
   }
 
@@ -152,9 +150,8 @@ function StructuredDataView (/* options = {} */) {
    * @public
    * @param {Number} row row index
    * @param {String} colId column id
-   * @return {undefined} undefined
    */
-  function appendRow (row, colId) {
+  function appendRow(row, colId) {
     _insert(row, colId, true);
   }
 
@@ -164,9 +161,8 @@ function StructuredDataView (/* options = {} */) {
    * @param {Number} row row index
    * @param {String} colId column id
    * @param {Boolean} isAppend flag for append mode
-   * @return {undefined} undefined
    */
-  function _insert (row, colId, isAppend) {
+  function _insert(row, colId, isAppend) {
     let $$item = _$$items.find(getItem(row, colId)),
         $$parent = $$item.parent();
 
@@ -182,7 +178,7 @@ function StructuredDataView (/* options = {} */) {
     }
     let parent = $$parent[0];
 
-    function reset (obj) {
+    function reset(obj) {
       for (let k in obj) {
         if (typeof obj[k] !== 'object') {
           obj[k] = '';
@@ -207,9 +203,8 @@ function StructuredDataView (/* options = {} */) {
    * @param {Number} row row index
    * @param {String} colId column id
    * @param {Boolean} isAppend flag for append mode
-   * @return {undefined} undefined
    */
-  function deleteRow (row, colId) {
+  function deleteRow(row, colId) {
     let $$item = _$$items.find(getItem(row, colId)),
         $$parent = $$item.parent();
 
@@ -236,9 +231,8 @@ function StructuredDataView (/* options = {} */) {
 
   /**
    * Notify changed.
-   * @returns {undefined} undefined
    */
-  function _refresh () {
+  function _refresh() {
     _rows = _genRowsFromItems(_items);
     onRowsChanged.notify();
   }
@@ -277,7 +271,7 @@ function StructuredDataView (/* options = {} */) {
    * @param {Boolean} isFirstChild iinternal flag
    * @returns {Object} rows
    */
-  function _genRowsFromItems (item, acc = [], isObjInObj = false, isFirstChild = false) {
+  function _genRowsFromItems(item, acc = [], isObjInObj = false, isFirstChild = false) {
     let i, len;
 
     if ($.isArray(item)) {
@@ -319,9 +313,9 @@ function StructuredDataView (/* options = {} */) {
    * @param {String} colId column ID
    * @returns {Number} rowspan
    */
-  function _getRowspan (row, colId) {
+  function _getRowspan(row, colId) {
 
-    function _getGeneration (item) {
+    function _getGeneration(item) {
       if (item == null) {
         return null;
       }
@@ -329,7 +323,7 @@ function StructuredDataView (/* options = {} */) {
       let depth = 0;
       _dive(item);
 
-      function _dive (item) {
+      function _dive(item) {
         let hasArrayOrObj = false;
 
         if (typeof item !== 'object') return;
@@ -371,17 +365,15 @@ function StructuredDataView (/* options = {} */) {
    * @public
    * @param {SlickGrid} grid SlickGrid object
    * @param {String} key key of style rules
-   * @return {undefined} undefined
    */
-  function syncGridCellCssStyles (grid, key) {
+  function syncGridCellCssStyles(grid, key) {
 
     /**
      * Create css rules for rowspan.
      * @private
      * @param {SlickGrid} grid SlickGrid object
-     * @returns {undefined} undefined
      */
-    function _createCssRules () {
+    function _createCssRules() {
 
       // create style rules
       let uid = grid.getContainerNode().className.match(/(?: |^)slickgrid_\d+(?!\w)/)[0],
@@ -405,9 +397,9 @@ function StructuredDataView (/* options = {} */) {
     /**
      * Measure a cell height and horizontal padding. (almost adapted from `measureCellPaddingAndBorder` in slick.grid.js)
      * @private
-     * @returns {undefined} undefined
+     * @returns {Object.<number, number>} height of cell, and horizontal padding
      */
-    function _measureVCellPaddingAndBorder () {
+    function _measureVCellPaddingAndBorder() {
 
       let v = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
           $canvas = $(grid.getCanvasNode()),
@@ -418,7 +410,7 @@ function StructuredDataView (/* options = {} */) {
           heightDiff = 0;
 
       height = parseFloat($el.css('height'));
-      $.each(v, function (n, val) {
+      $.each(v, function(n, val) {
         heightDiff += parseFloat($el.css(val)) || 0;
       });
       $r.remove();
@@ -432,7 +424,7 @@ function StructuredDataView (/* options = {} */) {
      * @param {Object} columnDef column defination
      * @returns {String} value
      */
-    function _structuredDataExtractor (item, columnDef) {
+    function _structuredDataExtractor(item, columnDef) {
       return String(StructuredDataView.prototype.getValue.apply(null, [item, columnDef]));
     }
 
@@ -444,7 +436,7 @@ function StructuredDataView (/* options = {} */) {
      * @param {Array.<Object>} columns columun definations
      * @return {Object} hash of style rules
      */
-    function _genCssHashFromRows () {
+    function _genCssHashFromRows() {
       let cssHash = {},
           columns = grid.getColumns();
 
@@ -462,9 +454,8 @@ function StructuredDataView (/* options = {} */) {
     /**
      * Update CSS rules.
      * @private
-     * @return {undefined} undefined
      */
-    function _styleUpdate () {
+    function _styleUpdate() {
       let cssHash = _genCssHashFromRows();
 
       grid.setCellCssStyles(key, cssHash);

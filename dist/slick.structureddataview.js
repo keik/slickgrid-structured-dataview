@@ -955,7 +955,7 @@ $.extend(true, window, {
  * @constructor
  * @param {SlickGrid} grid SlickGrid object
  */
-function StructuredDataView() /* options = {} */{
+function StructuredDataView() {
 
   /** master data */
   var _items = [],
@@ -1037,7 +1037,7 @@ function StructuredDataView() /* options = {} */{
    * Unused. (but overriding required)
    * @returns {Object} blank object.
    */
-  function getItemMetadata() /* i */{
+  function getItemMetadata() {
     return {};
   }
 
@@ -1045,7 +1045,6 @@ function StructuredDataView() /* options = {} */{
    * Set items.
    * @public
    * @param {Array.<Object>} items items
-   * @returns {undefined} undefined
    */
   function setItems(items) {
     _items = items;
@@ -1071,7 +1070,6 @@ function StructuredDataView() /* options = {} */{
    * @public
    * @param {Number} row row index
    * @param {String} colId column id
-   * @return {undefined} undefined
    */
   function insertRow(row, colId) {
     _insert(row, colId, false);
@@ -1082,7 +1080,6 @@ function StructuredDataView() /* options = {} */{
    * @public
    * @param {Number} row row index
    * @param {String} colId column id
-   * @return {undefined} undefined
    */
   function appendRow(row, colId) {
     _insert(row, colId, true);
@@ -1094,7 +1091,6 @@ function StructuredDataView() /* options = {} */{
    * @param {Number} row row index
    * @param {String} colId column id
    * @param {Boolean} isAppend flag for append mode
-   * @return {undefined} undefined
    */
   function _insert(row, colId, isAppend) {
     var $$item = _$$items.find(getItem(row, colId)),
@@ -1137,7 +1133,6 @@ function StructuredDataView() /* options = {} */{
    * @param {Number} row row index
    * @param {String} colId column id
    * @param {Boolean} isAppend flag for append mode
-   * @return {undefined} undefined
    */
   function deleteRow(row, colId) {
     var $$item = _$$items.find(getItem(row, colId)),
@@ -1166,7 +1161,6 @@ function StructuredDataView() /* options = {} */{
 
   /**
    * Notify changed.
-   * @returns {undefined} undefined
    */
   function _refresh() {
     _rows = _genRowsFromItems(_items);
@@ -1304,7 +1298,6 @@ function StructuredDataView() /* options = {} */{
    * @public
    * @param {SlickGrid} grid SlickGrid object
    * @param {String} key key of style rules
-   * @return {undefined} undefined
    */
   function syncGridCellCssStyles(grid, key) {
 
@@ -1312,7 +1305,6 @@ function StructuredDataView() /* options = {} */{
      * Create css rules for rowspan.
      * @private
      * @param {SlickGrid} grid SlickGrid object
-     * @returns {undefined} undefined
      */
     function _createCssRules() {
 
@@ -1339,7 +1331,7 @@ function StructuredDataView() /* options = {} */{
     /**
      * Measure a cell height and horizontal padding. (almost adapted from `measureCellPaddingAndBorder` in slick.grid.js)
      * @private
-     * @returns {undefined} undefined
+     * @returns {Object.<number, number>} height of cell, and horizontal padding
      */
     function _measureVCellPaddingAndBorder() {
 
@@ -1396,7 +1388,6 @@ function StructuredDataView() /* options = {} */{
     /**
      * Update CSS rules.
      * @private
-     * @return {undefined} undefined
      */
     function _styleUpdate() {
       var cssHash = _genCssHashFromRows();

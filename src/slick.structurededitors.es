@@ -8,14 +8,14 @@ export {
   LongTextEditor
 };
 
-function TextEditor (args) {
+function TextEditor(args) {
   var $input;
   var defaultValue;
 
-  this.init = function () {
+  this.init = function() {
     $input = $('<input type=text class="editor-text" />')
       .appendTo(args.container)
-      .bind('keydown.nav', function (e) {
+      .bind('keydown.nav', function(e) {
         if (e.keyCode === 37 /* LEFT */ || e.keyCode === 39 /* RIGHT */) {
           e.stopImmediatePropagation();
         }
@@ -24,23 +24,23 @@ function TextEditor (args) {
       .select();
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $input.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $input.focus();
   };
 
-  this.getValue = function () {
+  this.getValue = function() {
     return $input.val();
   };
 
-  this.setValue = function (val) {
+  this.setValue = function(val) {
     $input.val(val);
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     defaultValue = item[args.column.field] || '';
     $input.val(defaultValue);
@@ -48,20 +48,20 @@ function TextEditor (args) {
     $input.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return $input.val();
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (!($input.val() === '' && defaultValue == null)) && ($input.val() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     if (args.column.validator) {
       var validationResults = args.column.validator($input.val());
       if (!validationResults.valid) {
@@ -78,14 +78,14 @@ function TextEditor (args) {
   this.init();
 }
 
-function IntegerEditor (args) {
+function IntegerEditor(args) {
   var $input;
   var defaultValue;
 
-  this.init = function () {
+  this.init = function() {
     $input = $('<input type=text class="editor-text" />');
 
-    $input.bind('keydown.nav', function (e) {
+    $input.bind('keydown.nav', function(e) {
       if (e.keyCode === 37 /* LEFT */ || e.keyCode === 39 /* RIGHT */) {
         e.stopImmediatePropagation();
       }
@@ -95,15 +95,15 @@ function IntegerEditor (args) {
     $input.focus().select();
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $input.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $input.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     defaultValue = item[args.column.field];
     $input.val(defaultValue);
@@ -111,20 +111,20 @@ function IntegerEditor (args) {
     $input.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return parseInt($input.val(), 10) || 0;
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (!($input.val() === '' && defaultValue == null)) && ($input.val() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     if (isNaN($input.val())) {
       return {
         valid: false,
@@ -141,12 +141,12 @@ function IntegerEditor (args) {
   this.init();
 }
 
-function DateEditor (args) {
+function DateEditor(args) {
   var $input;
   var defaultValue;
   var calendarOpen = false;
 
-  this.init = function () {
+  this.init = function() {
     $input = $('<input type=text class="editor-text" />');
     $input.appendTo(args.container);
     $input.focus().select();
@@ -154,36 +154,36 @@ function DateEditor (args) {
       showOn: 'button',
       buttonImageOnly: true,
       buttonImage: '../images/calendar.gif',
-      beforeShow: function () {
+      beforeShow: function() {
         calendarOpen = true;
       },
-      onClose: function () {
+      onClose: function() {
         calendarOpen = false;
       }
     });
     $input.width($input.width() - 18);
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $.datepicker.dpDiv.stop(true, true);
     $input.datepicker('hide');
     $input.datepicker('destroy');
     $input.remove();
   };
 
-  this.show = function () {
+  this.show = function() {
     if (calendarOpen) {
       $.datepicker.dpDiv.stop(true, true).show();
     }
   };
 
-  this.hide = function () {
+  this.hide = function() {
     if (calendarOpen) {
       $.datepicker.dpDiv.stop(true, true).hide();
     }
   };
 
-  this.position = function (position) {
+  this.position = function(position) {
     if (!calendarOpen) {
       return;
     }
@@ -192,11 +192,11 @@ function DateEditor (args) {
       .css('left', position.left);
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $input.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     defaultValue = item[args.column.field];
     $input.val(defaultValue);
@@ -204,20 +204,20 @@ function DateEditor (args) {
     $input.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return $input.val();
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (!($input.val() === '' && defaultValue == null)) && ($input.val() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     return {
       valid: true,
       msg: null
@@ -227,44 +227,44 @@ function DateEditor (args) {
   this.init();
 }
 
-function YesNoSelectEditor (args) {
+function YesNoSelectEditor(args) {
   var $select;
   var defaultValue;
 
-  this.init = function () {
+  this.init = function() {
     $select = $('<select tabIndex="0" class="editor-yesno"><option value="yes">Yes</option><option value="no">No</option></select>');
     $select.appendTo(args.container);
     $select.focus();
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $select.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $select.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     $select.val((defaultValue = item[args.column.field]) ? 'yes' : 'no');
     $select.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return ($select.val() === 'yes');
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return ($select.val() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     return {
       valid: true,
       msg: null
@@ -274,25 +274,25 @@ function YesNoSelectEditor (args) {
   this.init();
 }
 
-function CheckboxEditor (args) {
+function CheckboxEditor(args) {
   var $select;
   var defaultValue;
 
-  this.init = function () {
+  this.init = function() {
     $select = $('<input type=checkbox value="true" class="editor-checkbox" hideFocus>');
     $select.appendTo(args.container);
     $select.focus();
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $select.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $select.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     defaultValue = Boolean(item[args.column.field]);
     if (defaultValue) {
@@ -302,20 +302,20 @@ function CheckboxEditor (args) {
     }
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return Boolean($select.attr('checked'));
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (this.serializeValue() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     return {
       valid: true,
       msg: null
@@ -325,11 +325,11 @@ function CheckboxEditor (args) {
   this.init();
 }
 
-function PercentCompleteEditor (args) {
+function PercentCompleteEditor(args) {
   var $input, $picker;
   var defaultValue;
 
-  this.init = function () {
+  this.init = function() {
     $input = $('<input type=text class="editor-percentcomplete" />');
     $input.width($(args.container).innerWidth() - 25);
     $input.appendTo(args.container);
@@ -345,46 +345,46 @@ function PercentCompleteEditor (args) {
       orientation: 'vertical',
       range: 'min',
       value: defaultValue,
-      slide: function (event, ui) {
+      slide: function(event, ui) {
         $input.val(ui.value);
       }
     });
 
-    $picker.find('.editor-percentcomplete-buttons button').bind('click', function () {
+    $picker.find('.editor-percentcomplete-buttons button').bind('click', function() {
       $input.val($(this).attr('val'));
       $picker.find('.editor-percentcomplete-slider').slider('value', $(this).attr('val'));
     });
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $input.remove();
     $picker.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $input.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     $input.val(defaultValue = item[args.column.field]);
     $input.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return parseInt($input.val(), 10) || 0;
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (!($input.val() === '' && defaultValue == null)) && ((parseInt($input.val(), 10) || 0) !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     if (isNaN(parseInt($input.val(), 10))) {
       return {
         valid: false,
@@ -406,12 +406,12 @@ function PercentCompleteEditor (args) {
  * The UI is added onto document BODY and .position(), .show() and .hide() are implemented.
  * KeyDown events are also handled to provide handling for Tab, Shift-Tab, Esc and Ctrl-Enter.
  */
-function LongTextEditor (args) {
+function LongTextEditor(args) {
   var $input, $wrapper;
   var defaultValue;
   var _self = this;
 
-  this.init = function () {
+  this.init = function() {
     var $container = $('body');
 
     $wrapper = $('<div style="z-index:10000;position:absolute;background:white;padding:5px;border:3px solid gray; -moz-border-radius:10px; border-radius:10px;"/>')
@@ -431,7 +431,7 @@ function LongTextEditor (args) {
     $input.focus().select();
   };
 
-  this.handleKeyDown = function (e) {
+  this.handleKeyDown = function(e) {
     if (e.which === 13 /* ENTER */ && e.ctrlKey) {
       _self.save();
     } else if (e.which === 27 /* ESCAPE */) {
@@ -446,57 +446,57 @@ function LongTextEditor (args) {
     }
   };
 
-  this.save = function () {
+  this.save = function() {
     args.commitChanges();
   };
 
-  this.cancel = function () {
+  this.cancel = function() {
     $input.val(defaultValue);
     args.cancelChanges();
   };
 
-  this.hide = function () {
+  this.hide = function() {
     $wrapper.hide();
   };
 
-  this.show = function () {
+  this.show = function() {
     $wrapper.show();
   };
 
-  this.position = function (position) {
+  this.position = function(position) {
     $wrapper
       .css('top', position.top - 5)
       .css('left', position.left - 5);
   };
 
-  this.destroy = function () {
+  this.destroy = function() {
     $wrapper.remove();
   };
 
-  this.focus = function () {
+  this.focus = function() {
     $input.focus();
   };
 
-  this.loadValue = function (item) {
+  this.loadValue = function(item) {
     item = args.grid.getData().getItem(item, args.column.field);
     $input.val(defaultValue = item[args.column.field]);
     $input.select();
   };
 
-  this.serializeValue = function () {
+  this.serializeValue = function() {
     return $input.val();
   };
 
-  this.applyValue = function (item, state) {
+  this.applyValue = function(item, state) {
     item = args.grid.getData().getItem(item, args.column.field);
     item[args.column.field] = state;
   };
 
-  this.isValueChanged = function () {
+  this.isValueChanged = function() {
     return (!($input.val() === '' && defaultValue == null)) && ($input.val() !== defaultValue);
   };
 
-  this.validate = function () {
+  this.validate = function() {
     return {
       valid: true,
       msg: null
