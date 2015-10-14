@@ -1,6 +1,7 @@
 /**
  * https://github.com/keik/slickgrid-structured-dataview
- * (c) keik
+ * @version $VERSION
+ * @author keik <k4t0.kei@gmail.com>
  * @license MIT
  */
 

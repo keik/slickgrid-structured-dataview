@@ -8,8 +8,9 @@
     "lint": "eslint src/*.es",
     "start:dev": "http-server & watchify src/slick.structureddataview.es -o dist/slick.structureddataview.js -t babelify -v",
     "test": "mocha-phantomjs test/index.html",
-    "build": "npm run clean && npm run lint && npm run browserify && npm run uglify && npm run test",
+    "build": "npm run clean && npm run lint && npm run browserify && npm run replace:version && npm run uglify && npm run test",
     "-----": "----------------------------------------------------------------",
+    "replace:version": "VERSION=$(node -e 'console.log(require(\"./package.json\").version)') && perl -i -pe 's/\\$VERSION/v'\"$VERSION\"'/' 'dist/slick.structureddataview.js'",
     "clean": "rimraf dist && mkdirp dist",
     "browserify": "browserify -t babelify src/slick.structureddataview.es > dist/slick.structureddataview.js",
     "uglify": "uglifyjs dist/slick.structureddataview.js -cm --comments -o dist/slick.structureddataview.min.js"

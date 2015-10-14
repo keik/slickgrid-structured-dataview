@@ -920,7 +920,8 @@ function plural(ms, n, name) {
 },{}],6:[function(require,module,exports){
 /**
  * https://github.com/keik/slickgrid-structured-dataview
- * (c) keik
+ * @version v0.5.0
+ * @author keik <k4t0.kei@gmail.com>
  * @license MIT
  */
 
