@@ -4,7 +4,7 @@
 
 ![](https://github.com/keik/slickgrid-structured-dataview/raw/master/screenshots/screenshot.png)
 
-[demo](http://keik.info/products/slickgrid-structured-dataview/examples/)
+[demo](http://keik.github.io/slickgrid-structured-dataview/examples/)
 
 ## Usage
 
